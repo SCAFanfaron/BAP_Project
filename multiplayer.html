@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiplayer Tetris</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="multiplayer-container">
+        <h1>Local Multiplayer Tetris</h1>
+        <div class="players">
+            <div class="player">
+                <h2>Player 1</h2>
+                <canvas id="player1-canvas" width="200" height="400"></canvas>
+                <div class="player-info">
+                    <p>Score: <span id="player1-score">0</span></p>
+                    <p>Level: <span id="player1-level">1</span></p>
+                </div>
+            </div>
+            <div class="player">
+                <h2>Player 2</h2>
+                <canvas id="player2-canvas" width="200" height="400"></canvas>
+                <div class="player-info">
+                    <p>Score: <span id="player2-score">0</span></p>
+                    <p>Level: <span id="player2-level">1</span></p>
+                </div>
+            </div>
+        </div>
+        <div id="game-over-multi" style="display:none;">
+            <h2>Game Over!</h2>
+            <p id="winner-message"></p>
+            <button onclick="window.location.reload()">Play Again</button>
+            <button onclick="window.location.href='index.html'">Main Menu</button>
+        </div>
+        <button onclick="window.location.href='index.html'">Main Menu</button>
+    </div>
+    <script src="js/tetris.js"></script>
+    <script src="js/multiplayer.js"></script>
+</body>
+</html>

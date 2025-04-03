@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tetris Game</h1>
+        <div id="auth-status"></div>
+        <div class="menu">
+            <button onclick="window.location.href='singleplayer.html'">Single Player</button>
+            <button onclick="window.location.href='multiplayer.html'">Local Multiplayer</button>
+            <button onclick="window.location.href='leaderboard.html'">Leaderboard</button>
+            <button id="logout-btn" style="display:none;">Logout</button>
+            <button onclick="window.location.href='auth.html'">Login/Register</button>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getCurrentUser();
+            const authStatus = document.getElementById('auth-status');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            if (user) {
+                authStatus.innerHTML = `Welcome, ${user.username}!`;
+                logoutBtn.style.display = 'inline-block';
+                logoutBtn.addEventListener('click', () => {
+                    logout();
+                    window.location.reload();
+                });
+            } else {
+                authStatus.innerHTML = 'Please login or register';
+            }
+        });
+    </script>
+</body>
+</html>

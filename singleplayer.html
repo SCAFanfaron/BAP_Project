@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Single Player Tetris</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-area">
+            <canvas id="tetris-canvas" width="300" height="600"></canvas>
+            <div class="game-info">
+                <h2>Score: <span id="score">0</span></h2>
+                <h2>Level: <span id="level">1</span></h2>
+                <h2>Lines: <span id="lines">0</span></h2>
+                <button id="pause-btn">Pause</button>
+                <button onclick="window.location.href='index.html'">Main Menu</button>
+            </div>
+        </div>
+        <div id="game-over" style="display:none;">
+            <h2>Game Over!</h2>
+            <p>Your score: <span id="final-score">0</span></p>
+            <button onclick="window.location.reload()">Play Again</button>
+            <button onclick="window.location.href='index.html'">Main Menu</button>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+    <script src="js/tetris.js"></script>
+    <script src="js/singleplayer.js"></script>
+</body>
+</html>
