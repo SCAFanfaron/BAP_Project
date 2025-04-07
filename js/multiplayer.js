@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const winnerMsg = document.getElementById('winner-message');
         
             if (player1.score > player2.score) {
-                winnerMsg.textContent = Player 1 wins with ${player1.score} points!;
+                winnerMsg.textContent = `Player 1 wins with ${player1.score} points!`;
             } else if (player2.score > player1.score) {
-                winnerMsg.textContent = Player 2 wins with ${player2.score} points!;
+                winnerMsg.textContent = `Player 2 wins with ${player2.score} points!`;
             } else {
                 winnerMsg.textContent = "It's a tie!";
             }
