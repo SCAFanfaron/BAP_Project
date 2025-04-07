@@ -42,27 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
-        if (player1.gameOver || player2.gameOver) {
+        if (player1.gameOver && player2.gameOver) {
             const gameOverDiv = document.getElementById('game-over-multi');
             const winnerMsg = document.getElementById('winner-message');
-            
-            if (player1.gameOver && player2.gameOver) {
-                if (player1.score > player2.score) {
-                    winnerMsg.textContent = `Player 1 wins with ${player1.score} points!`;
-                } else if (player2.score > player1.score) {
-                    winnerMsg.textContent = `Player 2 wins with ${player2.score} points!`;
-                } else {
-                    winnerMsg.textContent = "It's a tie!";
-                }
-            } else if (player1.gameOver) {
-                winnerMsg.textContent = `Player 2 wins with ${player2.score} points!`;
+        
+            if (player1.score > player2.score) {
+                winnerMsg.textContent = Player 1 wins with ${player1.score} points!;
+            } else if (player2.score > player1.score) {
+                winnerMsg.textContent = Player 2 wins with ${player2.score} points!;
             } else {
-                winnerMsg.textContent = `Player 1 wins with ${player1.score} points!`;
+                winnerMsg.textContent = "It's a tie!";
             }
-            
+        
             gameOverDiv.style.display = 'block';
-            return;
+            return; // Останавливаем gameLoop только когда оба проиграли
         }
+        
         
         animationId = requestAnimationFrame(gameLoop);
     }
@@ -118,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 case controls.player2.rotate:
                     player2.rotate();
                     break;
-                case controls.player2.drop:
+case controls.player2.drop:
                     player2.drop();
                     break;
             }
