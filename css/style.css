@@ -1,71 +1,192 @@
+/* style.css - Enhanced Cyberpunk/Neural Network Theme */
+:root {
+    --neon-blue: #00f0ff;
+    --neon-pink: #ff00ff;
+    --neon-purple: #9d00ff;
+    --dark-bg: #0a0a1a;
+    --darker-bg: #050510;
+    --panel-bg: rgba(10, 20, 40, 0.9);
+}
+
 body {
-    overflow: hidden;
+    overflow-x: hidden;
     touch-action: none;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
+    background-color: var(--dark-bg);
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(20, 100, 200, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(to bottom, rgba(0, 255, 255, 0.03) 0%, transparent 100%);
+    color: var(--neon-blue);
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    background-color: var(--panel-bg);
+    padding: 2rem;
+    border-radius: 0;
+    border: 1px solid var(--neon-blue);
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.3),
+        inset 0 0 10px rgba(0, 240, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before, .container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--neon-blue), transparent);
+    animation: scanline 3s linear infinite;
+}
+
+.container::after {
+    top: auto;
+    bottom: 0;
+    animation-delay: 1.5s;
+}
+
+@keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(calc(100vh + 100%)); }
+}
+
+h1, h2, h3 {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    letter-spacing: 3px;
+    position: relative;
+    margin-bottom: 1.5rem;
 }
 
 h1 {
-    text-align: center;
-    color: #2c3e50;
+    font-size: 2.5rem;
+    border-bottom: 1px solid var(--neon-blue);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+h2 {
+    font-size: 1.8rem;
+    border-left: 3px solid var(--neon-blue);
+    padding-left: 1rem;
 }
 
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 1rem;
+    margin-top: 2rem;
 }
 
 button {
-    padding: 12px 20px;
-    font-size: 16px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    background-color: transparent;
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    border-radius: 0;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease-out;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    box-shadow: 0 0 0 rgba(0, 240, 255, 0);
 }
 
-button:hover {
-    background-color: #2980b9;
+button:hover, button:focus {
+    background-color: rgba(0, 240, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+    transition: 0.5s;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button::after {
+    content: ">";
+    position: absolute;
+    right: 1rem;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+button:hover::after {
+    opacity: 1;
+    right: 1.5rem;
 }
 
 .game-container {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-top: 20px;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
 }
 
 .game-area {
     display: flex;
-    gap: 20px;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 canvas {
-    border: 2px solid #333;
-    background-color: #111;
+    border: 2px solid var(--neon-blue);
+    background-color: #000;
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.3),
+        inset 0 0 10px rgba(0, 240, 255, 0.1);
 }
 
 .game-info {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 10px;
-    background-color: #ecf0f1;
-    border-radius: 4px;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--neon-blue);
+    min-width: 250px;
 }
 
 #game-over {
@@ -73,13 +194,22 @@ canvas {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 8px;
+    background-color: rgba(10, 20, 40, 0.95);
+    padding: 3rem;
+    border: 1px solid var(--neon-pink);
+    border-radius: 0;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 0 30px rgba(255, 0, 255, 0.5),
+        inset 0 0 15px rgba(255, 0, 255, 0.2);
+    color: var(--neon-pink);
+    text-transform: uppercase;
+    z-index: 100;
+    width: 80%;
+    max-width: 500px;
 }
 
+/* Multiplayer specific styles */
 .multiplayer-container {
     max-width: 900px;
     margin: 0 auto;
@@ -89,93 +219,447 @@ canvas {
 .players {
     display: flex;
     justify-content: center;
-    gap: 40px;
-    margin: 20px 0;
+    gap: 2.5rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
 }
 
 .player {
-    background-color: #ecf0f1;
-    padding: 15px;
-    border-radius: 8px;
+    background-color: var(--panel-bg);
+    padding: 1.5rem;
+    border: 1px solid var(--neon-blue);
+    position: relative;
+    min-width: 300px;
+    transition: all 0.3s;
+}
+
+.player:hover {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.player::before {
+    content: "NEURAL LINK ACTIVE";
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--darker-bg);
+    padding: 0 1rem;
+    font-size: 0.8rem;
+    color: var(--neon-pink);
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
 }
 
 .player canvas {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--neon-pink);
 }
 
 .player-info {
-    text-align: left;
+    text-align: center;
+    font-size: 0.9rem;
 }
 
-#game-over-multi {
-    margin: 20px auto;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    max-width: 500px;
-}
-
+/* Auth forms */
 .auth-forms {
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin: 30px 0;
+    gap: 2rem;
+    margin: 2.5rem 0;
+    flex-wrap: wrap;
 }
 
 .form-container {
-    background-color: #ecf0f1;
-    padding: 20px;
-    border-radius: 8px;
-    width: 250px;
+    background-color: var(--panel-bg);
+    padding: 2rem;
+    border: 1px solid var(--neon-blue);
+    width: 100%;
+    max-width: 350px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.form-container:hover {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
 }
 
 .form-container h2 {
     margin-top: 0;
-    color: #2c3e50;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    color: var(--neon-pink);
+    border-bottom: 1px solid var(--neon-pink);
+    padding-bottom: 0.5rem;
 }
 
 input {
-    padding: 10px;
-    border: 1px solid #bdc3c7;
-    border-radius: 4px;
+    padding: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    margin-bottom: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s;
+    font-family: 'Courier New', monospace;
 }
 
-#auth-message {
-    text-align: center;
-    margin: 20px 0;
-    font-weight: bold;
+input:focus {
+    outline: none;
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
 }
 
+input::placeholder {
+    color: rgba(0, 240, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Leaderboard styles */
 #leaderboard {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 2rem 0;
+    border: 1px solid var(--neon-blue);
+    font-size: 0.9rem;
 }
 
 #leaderboard th, #leaderboard td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border: 1px solid var(--neon-blue);
+    padding: 0.8rem;
     text-align: left;
 }
 
 #leaderboard th {
-    background-color: #3498db;
-    color: white;
+    background-color: rgba(0, 240, 255, 0.1);
+    color: var(--neon-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: normal;
 }
 
 #leaderboard tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: rgba(0, 240, 255, 0.03);
 }
 
-#auth-status {
+#leaderboard tr:hover {
+    background-color: rgba(0, 240, 255, 0.1);
+}
+
+/* Enhanced Glitch effect */
+@keyframes glitch {
+    0% { 
+        text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-blue);
+        transform: translate(0);
+    }
+    20% { 
+        text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-pink);
+        transform: translate(-2px, 2px);
+    }
+    40% { 
+        text-shadow: 2px 0 var(--neon-purple), -2px 0 var(--neon-blue);
+        transform: translate(0);
+    }
+    60% { 
+        text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-purple);
+        transform: translate(2px, -2px);
+    }
+    80% { 
+        text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-purple);
+        transform: translate(0);
+    }
+    100% { 
+        text-shadow: -2px 0 var(--neon-purple), 2px 0 var(--neon-pink);
+        transform: translate(-2px, 2px);
+    }
+}
+
+h1 {
+    animation: glitch 1s linear infinite;
+}
+
+/* Pulsing effect for important elements */
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; text-shadow: 0 0 15px var(--neon-blue); }
+    100% { opacity: 0.8; }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Terminal-like blinking cursor */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+#auth-status::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .players, .auth-forms {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .player, .form-container {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Additional cyberpunk elements */
+.corner-decoration {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+    border-color: var(--neon-blue);
+    pointer-events: none;
+}
+
+.corner-decoration.top-left {
+    top: 0;
+    left: 0;
+    border-width: 2px 0 0 2px;
+}
+
+.corner-decoration.top-right {
+    top: 0;
+    right: 0;
+    border-width: 2px 2px 0 0;
+}
+
+.corner-decoration.bottom-left {
+    bottom: 0;
+    left: 0;
+    border-width: 0 0 2px 2px;
+}
+
+.corner-decoration.bottom-right {
+    bottom: 0;
+    right: 0;
+    border-width: 0 2px 2px 0;
+}
+
+/* Status indicators */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    background-color: var(--neon-blue);
+    box-shadow: 0 0 5px var(--neon-blue);
+}
+
+.status-indicator.online {
+    background-color: #00ff00;
+    box-shadow: 0 0 5px #00ff00;
+}
+
+.status-indicator.offline {
+    background-color: #ff0000;
+    box-shadow: 0 0 5px #ff0000;
+}
+/* Add these to your existing style.css */
+
+.security-protocol {
     text-align: center;
-    margin: 10px 0;
-    font-weight: bold;
-    color: #2c3e50;
+    margin: 1rem 0;
+    color: #ff00ff;
+    text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.auth-toggle {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 0;
+    border: 1px solid var(--neon-blue);
+}
+
+.auth-toggle button {
+    flex: 1;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    background-color: rgba(10, 20, 40, 0.8);
+    padding: 1rem;
+    transition: all 0.3s;
+}
+
+.auth-toggle button.active {
+    background-color: rgba(0, 240, 255, 0.2);
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px rgba(0, 240, 255, 0.8);
+}
+
+.auth-toggle button:not(.active):hover {
+    background-color: rgba(0, 240, 255, 0.1);
+}
+
+.form-container {
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.form-container.active {
+    display: block;
+}
+
+.form-description {
+    color: rgba(0, 240, 255, 0.7);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--neon-blue);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.return-btn {
+    width: 100%;
+    margin-top: 2rem;
+    background-color: rgba(10, 20, 40, 0.5);
+}
+
+#auth-message {
+    text-align: center;
+    margin: 1rem 0;
+    min-height: 1.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+canvas {
+    border: 2px solid var(--neon-blue);
+    background-color: rgba(10, 20, 40, 0.7);
+    box-shadow: 
+        0 0 30px rgba(0, 240, 255, 0.2),
+        inset 0 0 20px rgba(0, 240, 255, 0.1);
+    position: relative;
+}
+
+canvas::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+}
+
+/* Update player containers for larger canvases */
+.player {
+    min-width: 340px; /* Increased from 300px */
+    padding: 1.5rem 2rem;
+}
+
+.player canvas {
+    border: 2px solid;
+    margin: 0.5rem 0 1rem;
+}
+
+.player:nth-child(1) canvas {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.player:nth-child(2) canvas {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+}
+
+.neon-cyan {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 5px var(--neon-cyan);
+}
+
+.neon-pink {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+@keyframes neonPulse {
+    from { box-shadow: 0 0 10px rgba(255, 0, 255, 0.5); }
+    to { box-shadow: 0 0 30px rgba(255, 0, 255, 0.8); }
+}
+
+/* Add these to your existing style.css */
+.player canvas {
+    border: 2px solid;
+    background-color: rgba(10, 20, 40, 0.7);
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.3),
+        inset 0 0 10px rgba(0, 240, 255, 0.1);
+}
+
+.player:nth-child(1) canvas {
+    border-color: var(--neon-cyan);
+}
+
+.player:nth-child(2) canvas {
+    border-color: var(--neon-pink);
+}
+
+.neon-cyan {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 5px var(--neon-cyan);
+}
+
+.neon-pink {
+    color: var(--neon-pink);
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+.player-info {
+    margin-top: 1rem;
+    background-color: rgba(10, 20, 40, 0.5);
+    padding: 1rem;
+    border: 1px solid var(--neon-blue);
+}
+
+.player-info p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
 }

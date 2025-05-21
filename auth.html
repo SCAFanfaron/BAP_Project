@@ -2,36 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login/Register</title>
+    <title>NEURAL ACCESS</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Authentication</h1>
+        <h1>NEURAL ACCESS</h1>
+        <div class="security-protocol">
+            <p>**SECURITY PROTOCOL ACTIVE**</p>
+        </div>
+        
+        <div class="auth-toggle">
+            <button id="login-toggle" class="active">LOGIN</button>
+            <button id="register-toggle">REGISTER</button>
+        </div>
+        
         <div class="auth-forms">
-            <div class="form-container">
-                <h2>Login</h2>
+            <!-- Login Form -->
+            <div id="login-form-container" class="form-container active">
+                <h2>SYSTEM LOGIN</h2>
+                <p class="form-description">Enter credentials to access your neural profile</p>
                 <form id="login-form">
-                    <input type="text" id="login-username" placeholder="Username" required>
-                    <input type="password" id="login-password" placeholder="Password" required>
-                    <button type="submit">Login</button>
+                    <div class="input-group">
+                        <label for="login-username">NEURAL_ID</label>
+                        <input type="text" id="login-username" placeholder="user@nightcity.net" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">ACCESS KEY</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit">AUTHENTICATE</button>
                 </form>
             </div>
-            <div class="form-container">
-                <h2>Register</h2>
+            
+            <!-- Register Form -->
+            <div id="register-form-container" class="form-container">
+                <h2>NEW IDENTITY</h2>
+                <p class="form-description">Create neural profile to access the network</p>
                 <form id="register-form">
-                    <input type="text" id="register-username" placeholder="Username" required>
-                    <input type="password" id="register-password" placeholder="Password" required>
-                    <button type="submit">Register</button>
+                    <div class="input-group">
+                        <label for="register-username">NEURAL_ID</label>
+                        <input type="text" id="register-username" placeholder="user@nightcity.net" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-password">ACCESS KEY</label>
+                        <input type="password" id="register-password" placeholder="••••••••" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="register-confirm">CONFIRM ACCESS KEY</label>
+                        <input type="password" id="register-confirm" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit">CREATE IDENTITY</button>
                 </form>
             </div>
         </div>
+        
         <p id="auth-message"></p>
-        <button onclick="window.location.href='index.html'">Back to Main Menu</button>
+        <button class="return-btn" onclick="window.location.href='index.html'">RETURN TO MAINFRAME</button>
     </div>
-    <script src="js/auth.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Toggle between login and register forms
+            const loginToggle = document.getElementById('login-toggle');
+            const registerToggle = document.getElementById('register-toggle');
+            const loginFormContainer = document.getElementById('login-form-container');
+            const registerFormContainer = document.getElementById('register-form-container');
+            
+            loginToggle.addEventListener('click', () => {
+                loginToggle.classList.add('active');
+                registerToggle.classList.remove('active');
+                loginFormContainer.classList.add('active');
+                registerFormContainer.classList.remove('active');
+                document.getElementById('auth-message').textContent = '';
+            });
+            
+            registerToggle.addEventListener('click', () => {
+                registerToggle.classList.add('active');
+                loginToggle.classList.remove('active');
+                registerFormContainer.classList.add('active');
+                loginFormContainer.classList.remove('active');
+                document.getElementById('auth-message').textContent = '';
+            });
+            
+            // Form submissions
             const loginForm = document.getElementById('login-form');
             const registerForm = document.getElementById('register-form');
             const authMessage = document.getElementById('auth-message');
@@ -46,8 +100,8 @@
                     sessionStorage.setItem('current_user', JSON.stringify(user));
                     window.location.href = 'index.html';
                 } else {
-                    authMessage.textContent = 'Invalid username or password';
-                    authMessage.style.color = 'red';
+                    authMessage.textContent = 'ERROR: INVALID CREDENTIALS';
+                    authMessage.style.color = '#ff00ff';
                 }
             });
             
@@ -55,16 +109,39 @@
                 e.preventDefault();
                 const username = document.getElementById('register-username').value;
                 const password = document.getElementById('register-password').value;
+                const confirm = document.getElementById('register-confirm').value;
+                
+                if (password !== confirm) {
+                    authMessage.textContent = 'ERROR: ACCESS KEYS DO NOT MATCH';
+                    authMessage.style.color = '#ff00ff';
+                    return;
+                }
                 
                 if (register(username, password)) {
-                    authMessage.textContent = 'Registration successful! Please login.';
-                    authMessage.style.color = 'green';
+                    authMessage.textContent = 'IDENTITY CREATED. PROCEED TO AUTHENTICATION.';
+                    authMessage.style.color = '#00f0ff';
+                    // Switch to login form after successful registration
+                    setTimeout(() => {
+                        loginToggle.click();
+                        document.getElementById('login-username').value = username;
+                    }, 1500);
                 } else {
-                    authMessage.textContent = 'Username already exists';
-                    authMessage.style.color = 'red';
+                    authMessage.textContent = 'ERROR: NEURAL_ID ALREADY EXISTS';
+                    authMessage.style.color = '#ff00ff';
                 }
             });
         });
+        
+        // Mock functions - replace with your actual auth functions
+        function login(username, password) {
+            // Your actual login logic here
+            return { username: username }; // Mock return
+        }
+        
+        function register(username, password) {
+            // Your actual registration logic here
+            return true; // Mock return
+        }
     </script>
 </body>
 </html>

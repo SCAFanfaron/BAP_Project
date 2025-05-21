@@ -10,18 +10,22 @@ const SHAPES = [
 ];
 
 const COLORS = [
-    '#00FFFF', // I - Cyan
-    '#FFFF00', // O - Yellow
-    '#AA00FF', // T - Purple
-    '#FF7F00', // L - Orange
-    '#0000FF', // J - Blue
-    '#00FF00', // S - Green
-    '#FF0000'  // Z - Red
+    '#00F0FF', // I - Neon Cyan
+    '#FF00FF', // O - Neon Pink
+    '#9D00FF', // T - Neon Purple
+    '#FF7F00', // L - Neon Orange
+    '#00FF9D', // J - Neon Teal
+    '#F0FF00', // S - Neon Yellow
+    '#FF0066'  // Z - Neon Magenta
 ];
 
 class Tetris {
     constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) {
+            console.error('Canvas element not found!');
+            return;
+        }
         this.ctx = this.canvas.getContext('2d');
         this.rows = 20;
         this.cols = 10;
@@ -73,6 +77,7 @@ class Tetris {
         // Check if game over
         if (this.checkCollision()) {
             this.gameOver = true;
+            console.log('Game Over!');
         }
     }
     
@@ -80,7 +85,27 @@ class Tetris {
         // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Draw grid
+        // Draw grid background
+        this.ctx.fillStyle = 'rgba(10, 10, 30, 0.8)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Draw grid lines
+        this.ctx.strokeStyle = 'rgba(0, 240, 255, 0.1)';
+        this.ctx.lineWidth = 0.5;
+        for (let i = 0; i <= this.cols; i++) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(i * this.blockSize, 0);
+            this.ctx.lineTo(i * this.blockSize, this.canvas.height);
+            this.ctx.stroke();
+        }
+        for (let i = 0; i <= this.rows; i++) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, i * this.blockSize);
+            this.ctx.lineTo(this.canvas.width, i * this.blockSize);
+            this.ctx.stroke();
+        }
+        
+        // Draw locked pieces
         for (let row = 0; row < this.rows; row++) {
             for (let col = 0; col < this.cols; col++) {
                 if (this.grid[row][col]) {
@@ -99,13 +124,42 @@ class Tetris {
                 }
             }
         }
+        
+        // Draw game over effect
+        if (this.gameOver) {
+            this.ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
     }
     
     drawBlock(x, y, color) {
+        const padding = 2;
+        const size = this.blockSize - padding * 2;
+        
+        // Outer glow
+        this.ctx.shadowColor = color;
+        this.ctx.shadowBlur = 10;
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(x * this.blockSize, y * this.blockSize, this.blockSize, this.blockSize);
-        this.ctx.strokeStyle = '#000';
-        this.ctx.strokeRect(x * this.blockSize, y * this.blockSize, this.blockSize, this.blockSize);
+        this.ctx.fillRect(
+            x * this.blockSize + padding,
+            y * this.blockSize + padding,
+            size,
+            size
+        );
+        
+        // Inner glow
+        this.ctx.shadowBlur = 5;
+        this.ctx.fillStyle = `rgba(255, 255, 255, 0.3)`;
+        this.ctx.fillRect(
+            x * this.blockSize + padding * 2,
+            y * this.blockSize + padding * 2,
+            size - padding * 2,
+            size - padding * 2
+        );
+        
+        // Reset shadow
+        this.ctx.shadowColor = 'transparent';
+        this.ctx.shadowBlur = 0;
     }
     
     moveDown() {
@@ -229,11 +283,6 @@ class Tetris {
             
             // Increase speed
             this.dropInterval = Math.max(100, 1000 - (this.level - 1) * 50);
-            
-            // Update UI
-            document.getElementById('score').textContent = this.score;
-            document.getElementById('level').textContent = this.level;
-            document.getElementById('lines').textContent = this.lines;
         }
     }
     
@@ -252,7 +301,5 @@ class Tetris {
     
     togglePause() {
         this.isPaused = !this.isPaused;
-        const btn = document.getElementById('pause-btn');
-        btn.textContent = this.isPaused ? 'Resume' : 'Pause';
     }
 }

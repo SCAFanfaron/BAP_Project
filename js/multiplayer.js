@@ -1,10 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Increase canvas sizes for both players
+    const player1Canvas = document.getElementById('player1-canvas');
+    const player2Canvas = document.getElementById('player2-canvas');
+    
+    // Set larger dimensions (adjust these values as needed)
+    const canvasWidth = 300;  // Increased from 200
+    const canvasHeight = 600; // Increased from 400
+    
+    player1Canvas.width = canvasWidth;
+    player1Canvas.height = canvasHeight;
+    player2Canvas.width = canvasWidth;
+    player2Canvas.height = canvasHeight;
+
     const player1 = new Tetris('player1-canvas');
     const player2 = new Tetris('player2-canvas');
     let lastTime = 0;
     let animationId = null;
     
-    // Custom controls - Player 1: Arrows, Player 2: IJKL
+    // Custom controls - Player 1: WASD+E, Player 2: Arrows+Space
     const controls = {
         player1: {
             left: 'KeyA',
@@ -28,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timestamp - player1.lastDrop > player1.dropInterval) {
                 player1.moveDown();
                 player1.lastDrop = timestamp;
-                document.getElementById('player1-score').textContent = player1.score;
-                document.getElementById('player1-level').textContent = player1.level;
+                updatePlayerInfo(1, player1);
             }
         }
         
@@ -37,29 +49,40 @@ document.addEventListener('DOMContentLoaded', () => {
             if (timestamp - player2.lastDrop > player2.dropInterval) {
                 player2.moveDown();
                 player2.lastDrop = timestamp;
-                document.getElementById('player2-score').textContent = player2.score;
-                document.getElementById('player2-level').textContent = player2.level;
+                updatePlayerInfo(2, player2);
             }
         }
         
         if (player1.gameOver && player2.gameOver) {
-            const gameOverDiv = document.getElementById('game-over-multi');
-            const winnerMsg = document.getElementById('winner-message');
-        
-            if (player1.score > player2.score) {
-                winnerMsg.textContent = `Player 1 wins with ${player1.score} points!`;
-            } else if (player2.score > player1.score) {
-                winnerMsg.textContent = `Player 2 wins with ${player2.score} points!`;
-            } else {
-                winnerMsg.textContent = "It's a tie!";
-            }
-        
-            gameOverDiv.style.display = 'block';
-            return; // Останавливаем gameLoop только когда оба проиграли
+            showGameOver(player1, player2);
+            return;
         }
         
-        
         animationId = requestAnimationFrame(gameLoop);
+    }
+    
+    function updatePlayerInfo(playerNum, player) {
+        document.getElementById(`player${playerNum}-score`).textContent = player.score;
+        document.getElementById(`player${playerNum}-level`).textContent = player.level;
+    }
+    
+    function showGameOver(p1, p2) {
+        const gameOverDiv = document.getElementById('game-over-multi');
+        const winnerMsg = document.getElementById('winner-message');
+        
+        if (p1.score > p2.score) {
+            winnerMsg.textContent = `Player 1 wins with ${p1.score} points!`;
+            winnerMsg.style.color = '#00F0FF'; // Neon cyan
+        } else if (p2.score > p1.score) {
+            winnerMsg.textContent = `Player 2 wins with ${p2.score} points!`;
+            winnerMsg.style.color = '#FF00FF'; // Neon pink
+        } else {
+            winnerMsg.textContent = "Neural link synchronized - It's a tie!";
+            winnerMsg.style.color = '#9D00FF'; // Neon purple
+        }
+        
+        gameOverDiv.style.display = 'block';
+        gameOverDiv.style.animation = 'neonPulse 1s infinite alternate';
     }
     
     // Start game
@@ -69,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
         // Prevent default for all game control keys
         const controlKeys = [
-            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', // Player 1
-            'KeyJ', 'KeyL', 'KeyI', 'KeyK', 'KeyF' // Player 2
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space', // Player 2
+            'KeyA', 'KeyD', 'KeyW', 'KeyS', 'KeyE' // Player 1
         ];
         
         if (controlKeys.includes(e.code)) {
@@ -113,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 case controls.player2.rotate:
                     player2.rotate();
                     break;
-case controls.player2.drop:
+                case controls.player2.drop:
                     player2.drop();
                     break;
             }
